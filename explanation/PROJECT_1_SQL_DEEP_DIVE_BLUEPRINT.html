@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project 1: SQL Blueprint & Interview Defense Manual</title>
+  <style>
+    @page {
+      size: letter;
+      margin: 0.5in;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      background: #f8fafc;
+      line-height: 1.5;
+      font-size: 10pt;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .no-print-bar {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 12px 20px;
+      margin-bottom: 25px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .no-print-bar button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 9.5pt;
+    }
+    .no-print-bar button:hover {
+      background: #1d4ed8;
+    }
+    header {
+      border-bottom: 3px solid #0f172a;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h1 {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 11pt;
+      color: #475569;
+      font-weight: 600;
+    }
+    h2 {
+      font-size: 13pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 1.5px solid #cbd5e1;
+      padding-bottom: 6px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+    h3 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-top: 15px;
+      margin-bottom: 8px;
+    }
+    p {
+      margin-bottom: 10px;
+      color: #334155;
+    }
+    /* Cards */
+    .card-mindset {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 15px;
+    }
+    .card-mindset h4 {
+      color: #1e40af;
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .card-script {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+    .card-script h4 {
+      color: #15803d;
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 14px;
+      border-radius: 6px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 9pt;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin-bottom: 12px;
+    }
+    code {
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 8.8pt;
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    ol, ul {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+    li {
+      margin-bottom: 6px;
+      color: #334155;
+    }
+    li strong {
+      color: #0f172a;
+    }
+    @media print {
+      body {
+        background: white;
+      }
+      .container {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+      }
+      .no-print-bar {
+        display: none !important;
+      }
+      h2 {
+        page-break-before: auto;
+      }
+      pre, .card-mindset, .card-script {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="no-print-bar">
+      <span>📘 <strong>Project 1: SQL Blueprint &amp; Interview Defense Manual</strong></span>
+      <button onclick="window.print()">Print / Save as PDF</button>
+    </div>
+
+    <header>
+      <h1>Olist E-Commerce Analytics: SQL Blueprint</h1>
+      <div class="subtitle">Complete Query-by-Query Logic, Line Breakdown (Hinglish) &amp; Boardroom Interview Scripts (English)</div>
+    </header>
+
+    <!-- CORE ARCHITECTURE -->
+    <section>
+      <h2>0. The Core Architecture Decision: customer_id vs customer_unique_id</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Context (Hinglish):</h4>
+        <p>Olist database mein do alag columns hain: <code>customer_id</code> aur <code>customer_unique_id</code>. Jab customer checkout karta hai to har order ke liye ek naya <code>customer_id</code> generate hota hai (Order-level token). Lekin real human entity ka permanent unique ID <code>customer_unique_id</code> hai. Agar hum <code>customer_id</code> se group karenge to repeat rate 0% aayega! Isliye sabhi cohort aur retention queries mein <code>customer_unique_id</code> use kiya gaya.</p>
+      </div>
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"In Olist's relational architecture, <code>customer_id</code> is merely an order-level surrogate key generated per transaction. If you group by <code>customer_id</code>, your repeat rate calculates to 0%. To analyze true human repeat behavior, lifetime value, and cohort retention across multi-year cycles, you must join on <code>customer_unique_id</code>, which represents the persistent human entity."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 1 -->
+    <section>
+      <h2>Query 1: Category Margin Leakage (Freight-to-Price Ratio &gt; 20%)</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Problem:</strong> GMV $13.5M pahunch gaya lekin company ka operating margin kyu bleed ho raha hai?<br>
+        <strong>Hypothesis:</strong> Bhari aur bulky categories mein shipping cost itni zyada hai ki product price ka 25-35% courier mein chala ja raha hai.<br>
+        <strong>Action:</strong> Wo categories dhoondo jahan 100 se zyada orders aaye hon aur freight ratio 20% se zyada ho.</p>
+      </div>
+
+<pre><code>SELECT 
+    t.product_category_name_english AS category,
+    COUNT(oi.order_id) AS total_orders,
+    ROUND(SUM(oi.price), 2) AS total_sales_value,
+    ROUND(SUM(oi.freight_value), 2) AS total_freight_cost,
+    ROUND((SUM(oi.freight_value) / SUM(oi.price)) * 100, 2) AS freight_to_price_ratio
+FROM order_items oi
+JOIN products p 
+    ON oi.product_id = p.product_id
+JOIN category_translation t 
+    ON p.product_category_name = t.product_category_name
+GROUP BY t.product_category_name_english
+HAVING COUNT(oi.order_id) &gt;= 100 
+   AND freight_to_price_ratio &gt; 20
+ORDER BY freight_to_price_ratio DESC
+LIMIT 10;</code></pre>
+
+      <h3>🔬 Line-by-Line Logic Breakdown:</h3>
+      <ul>
+        <li><strong><code>FROM order_items oi</code>:</strong> Har sold item ki price aur freight value line-item table <code>order_items</code> mein hai, isliye base table ye bani.</li>
+        <li><strong><code>JOIN products p ON oi.product_id = p.product_id</code>:</strong> Order items mein category name nahi hai, isliye <code>products</code> table ko join kiya.</li>
+        <li><strong><code>JOIN category_translation t ...</code>:</strong> Raw categories Portuguese mein thin (e.g. <em>artigos_de_natal</em>). English name lane ke liye translation table ko join kiya.</li>
+        <li><strong><code>ROUND((SUM(oi.freight_value) / SUM(oi.price)) * 100, 2)</code>:</strong> Core KPI! Total freight cost ko total product sales se divide karke percentage nikala.</li>
+        <li><strong><code>HAVING COUNT(oi.order_id) &gt;= 100 AND freight_to_price_ratio &gt; 20</code>:</strong> Sample bias hatane ke liye kam se kam 100 orders ka threshold lagaya, aur 20% se zyada freight ratio filter kiya. <code>HAVING</code> isliye lagaya kyunki aggregate calculation par filter <code>WHERE</code> se nahi lag sakta.</li>
+      </ul>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"To diagnose unit margin erosion, I wrote a query against <code>order_items</code> joined with <code>products</code> and <code>category_translation</code>. I calculated the aggregate freight-to-price ratio by dividing <code>SUM(freight_value)</code> by <code>SUM(price)</code>. Using a <code>HAVING</code> clause, I filtered for statistically significant categories with at least 100 orders where freight exceeded a 20% margin threshold. This uncovered that categories like Christmas Supplies and Electronics were bleeding up to 36.7% and 29.1% in freight costs alone across $160K+ in sales."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 2 -->
+    <section>
+      <h2>Query 2: Delivery SLA Breach vs Customer CSAT Crash</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Problem:</strong> Platform par 1-star reviews ka flood kyu aa raha tha?<br>
+        <strong>Hypothesis:</strong> Late delivery direct customer anger aur negative review cause karti hai.<br>
+        <strong>Action:</strong> On-time vs delayed orders ke CSAT (review scores) aur 1-star review proportion ka comparison karo.</p>
+      </div>
+
+<pre><code>SELECT 
+    CASE 
+        WHEN DATEDIFF(o.order_delivered_customer_date, o.order_estimated_delivery_date) &gt; 0 THEN 'Delayed'
+        ELSE 'On-Time'
+    END AS delivery_status,
+    COUNT(o.order_id) AS total_orders,
+    ROUND(AVG(r.review_score), 2) AS avg_review_score,
+    ROUND(SUM(CASE WHEN r.review_score = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(o.order_id), 2) AS pct_1_star_reviews,
+    ROUND(SUM(CASE WHEN r.review_score = 5 THEN 1 ELSE 0 END) * 100.0 / COUNT(o.order_id), 2) AS pct_5_star_reviews
+FROM orders o
+JOIN order_reviews r 
+    ON o.order_id = r.order_id
+WHERE o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY delivery_status;</code></pre>
+
+      <h3>🔬 Line-by-Line Logic Breakdown:</h3>
+      <ul>
+        <li><strong><code>WHERE o.order_status = 'delivered' AND ... IS NOT NULL</code>:</strong> Cancelled ya in-transit orders ko exclude kiya taaki sirf delivered actual orders ka evaluation ho.</li>
+        <li><strong><code>DATEDIFF(actual_delivery, estimated_delivery) &gt; 0</code>:</strong> Agar delivery date promised estimated date ke baad aayi, to diff &gt; 0 hoga matlab order 'Delayed' hai.</li>
+        <li><strong><code>SUM(CASE WHEN r.review_score = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)</code>:</strong> Conditional aggregation se exact percentage calculate kiya ki delayed pool mein kitne percent logon ne 1-star diya.</li>
+      </ul>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"I investigated the direct relationship between logistics SLA compliance and customer satisfaction. By joining <code>orders</code> and <code>order_reviews</code>, I used a <code>CASE</code> statement with <code>DATEDIFF</code> to classify delivered orders into 'On-Time' versus 'Delayed' relative to the promised estimated delivery date. The query revealed that on-time orders maintain a 4.29 CSAT with only 6.6% 1-star reviews, whereas delayed orders experience a catastrophic CSAT collapse to 2.27, with 1-star rage reviews surging by 8x to 53.7%."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 3 -->
+    <section>
+      <h2>Query 3: Month-over-Month (MoM) Growth &amp; Macro Shocks</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Problem:</strong> 20 mahine ki sales trajectory mein growth trend kaisa tha? June 2018 mein sales achanak 12% kyu giri?<br>
+        <strong>Action:</strong> Monthly sales aggregate karo aur <code>LAG()</code> window function se previous month compare karke MoM % growth nikalo.</p>
+      </div>
+
+<pre><code>WITH monthly_sales AS (
+    SELECT 
+        SUBSTRING(o.order_purchase_timestamp, 1, 7) AS sales_month,
+        ROUND(SUM(oi.price), 2) AS current_month_sales
+    FROM orders o
+    JOIN order_items oi 
+        ON o.order_id = oi.order_id
+    WHERE o.order_status = 'delivered'
+      AND o.order_purchase_timestamp &gt;= '2017-01-01'
+      AND o.order_purchase_timestamp &lt; '2018-09-01'
+    GROUP BY sales_month
+)
+SELECT 
+    sales_month,
+    current_month_sales,
+    LAG(current_month_sales, 1) OVER (ORDER BY sales_month) AS previous_month_sales,
+    ROUND(
+        ((current_month_sales - LAG(current_month_sales, 1) OVER (ORDER BY sales_month)) 
+        / LAG(current_month_sales, 1) OVER (ORDER BY sales_month)) * 100, 
+        2
+    ) AS mom_growth_pct
+FROM monthly_sales;</code></pre>
+
+      <h3>🔬 Line-by-Line Logic Breakdown:</h3>
+      <ul>
+        <li><strong><code>WITH monthly_sales AS (...)</code>:</strong> Common Table Expression (CTE) use karke clean intermediate monthly aggregation banayi.</li>
+        <li><strong><code>SUBSTRING(..., 1, 7)</code>:</strong> Timestamp se <code>YYYY-MM</code> extract kiya.</li>
+        <li><strong><code>LAG(current_month_sales, 1) OVER (ORDER BY sales_month)</code>:</strong> Pichle mahine ki value current row ke bagal mein le aaya bina kisi slow self-join ke.</li>
+        <li><strong>Macro Insight:</strong> Nov 2017 mein +52.4% MoM peak Black Friday ki wajah se tha, aur June 2018 mein -12.4% contraction Brazil ke nationwide 11-day Truck Drivers' Strike (<em>Greve dos Caminhoneiros</em>) ki wajah se hua.</li>
+      </ul>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"I tracked the platform's revenue trajectory using a CTE paired with the <code>LAG()</code> window function. First, I aggregated net delivered sales by month (`YYYY-MM`). In the outer query, <code>LAG(current_month_sales, 1) OVER (ORDER BY sales_month)</code> retrieved the prior month's sales without an expensive self-join. This proved an 8x run-rate expansion from $111K to $900K+, pinpointed the Black Friday peak in Nov 2017 (+52.4% MoM), and explained the sudden -12.4% MoM contraction in June 2018 through macro triangulation with the nationwide Brazilian truckers' strike."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 4 -->
+    <section>
+      <h2>Query 4: Customer Retention Cohorts (The 97% Leaky Bucket)</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Problem:</strong> Naya customer laana (CAC) mehenga hai. Kitne percent customers wapas aa rahe hain?<br>
+        <strong>Action:</strong> Unique human ID (<code>customer_unique_id</code>) se order frequency count karo aur 1-time vs repeat cohorts nikalo.</p>
+      </div>
+
+<pre><code>WITH customer_order_counts AS (
+    SELECT 
+        c.customer_unique_id,
+        COUNT(o.order_id) AS total_orders
+    FROM customers c
+    JOIN orders o 
+        ON c.customer_id = o.customer_id
+    WHERE o.order_status = 'delivered'
+    GROUP BY c.customer_unique_id
+)
+SELECT 
+    CASE 
+        WHEN total_orders = 1 THEN '1-Time Buyer'
+        ELSE 'Repeat Buyer (2+ Orders)'
+    END AS customer_type,
+    COUNT(*) AS total_customers,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM customer_order_counts), 2) AS percentage_share
+FROM customer_order_counts
+GROUP BY customer_type;</code></pre>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"To assess customer retention, I built a cohort aggregation grouped by <code>customer_unique_id</code>. By counting delivered orders per human entity and bucketing them using a <code>CASE</code> statement, I discovered a severe 'leaky bucket' phenomenon: 96.9% of customers (over 90,000 buyers) never returned after their initial purchase, while repeat buyers accounted for only 3.1%."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 5 -->
+    <section>
+      <h2>Query 5: Debunking the Discount Hunter Myth</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Problem:</strong> Kya 97% log isliye bhaag gaye kyunki wo discount seekers the?<br>
+        <strong>Action:</strong> 1-time buyers ki voucher usage check karo ki unhone coupon use kiya tha ya poora paisa diya tha.</p>
+      </div>
+
+<pre><code>WITH customer_orders AS (
+    SELECT 
+        c.customer_unique_id,
+        COUNT(DISTINCT o.order_id) AS total_orders,
+        SUM(CASE WHEN p.payment_type = 'voucher' THEN 1 ELSE 0 END) AS voucher_count
+    FROM customers c
+    JOIN orders o 
+        ON c.customer_id = o.customer_id
+    LEFT JOIN order_payments p 
+        ON o.order_id = p.order_id
+    WHERE o.order_status = 'delivered'
+    GROUP BY c.customer_unique_id
+)
+SELECT 
+    CASE 
+        WHEN total_orders = 1 THEN '1-Time Buyer' 
+        ELSE 'Repeat Buyer (2+ Orders)' 
+    END AS customer_type,
+    COUNT(*) AS total_customers,
+    SUM(CASE WHEN voucher_count &gt; 0 THEN 1 ELSE 0 END) AS used_discount_customers,
+    ROUND(SUM(CASE WHEN voucher_count &gt; 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS pct_used_discount,
+    SUM(CASE WHEN voucher_count = 0 THEN 1 ELSE 0 END) AS no_discount_customers,
+    ROUND(SUM(CASE WHEN voucher_count = 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS pct_no_discount
+FROM customer_orders
+GROUP BY customer_type;</code></pre>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"I tested executive assumptions regarding whether churn was driven by price-sensitive coupon hunters. By joining customer cohorts with <code>order_payments</code> and aggregating voucher utilization, the data conclusively debunked the myth: 96.28% of one-time buyers paid full price without applying vouchers. This proved that customers had strong initial willingness to pay, and their failure to return stemmed from lack of lifecycle marketing and fulfillment delays, not discount sensitivity."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 6 -->
+    <section>
+      <h2>Query 6: 1-Star Review Autopsy (Carrier Failure vs Merchant Defect)</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Problem:</strong> 1-star reviews mein kiski galti hai? Courier company ki ya seller ki?<br>
+        <strong>Action:</strong> Delivery SLA difference ko review score aur order GMV ke saath correlate karo.</p>
+      </div>
+
+<pre><code>WITH customer_order_reviews AS (
+    SELECT 
+        c.customer_unique_id,
+        o.order_id,
+        r.review_score,
+        DATEDIFF(o.order_delivered_customer_date, o.order_estimated_delivery_date) AS delay_days,
+        p.payment_value
+    FROM customers c
+    JOIN orders o ON c.customer_id = o.customer_id
+    JOIN order_reviews r ON o.order_id = r.order_id
+    JOIN (
+        SELECT order_id, SUM(payment_value) AS payment_value 
+        FROM order_payments 
+        GROUP BY order_id
+    ) p ON o.order_id = p.order_id
+    WHERE o.order_status = 'delivered'
+      AND o.order_delivered_customer_date IS NOT NULL
+)
+SELECT 
+    CASE 
+        WHEN delay_days &gt; 0 THEN 'Delayed (Carrier Failure)' 
+        ELSE 'On-Time (Merchant / Quality Defect)' 
+    END AS failure_reason,
+    COUNT(DISTINCT customer_unique_id) AS lost_1_star_customers,
+    ROUND(SUM(payment_value), 2) AS immediate_order_revenue,
+    ROUND(AVG(payment_value), 2) AS avg_order_value,
+    ROUND(AVG(CASE WHEN delay_days &gt; 0 THEN delay_days ELSE NULL END), 1) AS avg_days_delayed
+FROM customer_order_reviews
+WHERE review_score = 1
+GROUP BY failure_reason;</code></pre>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"I performed an autopsy on 1-star negative reviews to separate logistics failure from merchant product quality issues. By joining review scores with delivery lead-time variance and order payments, I determined that 3,413 buyers ($635K in GMV) were destroyed purely by carrier delays averaging 12.4 days past SLA, while 5,864 buyers ($1.18M in GMV) received damaged or wrong items despite on-time delivery. This gave management two distinct remediation roadmaps: carrier penalty enforcement and merchant catalog quality audits."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 7 & 8 -->
+    <section>
+      <h2>Queries 7 &amp; 8: São Paulo Monopoly &amp; Cross-Border Logistics Friction</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Problem:</strong> Delivery delays kyu ho rahe the?<br>
+        <strong>Finding:</strong> 71.32% seller supply São Paulo (SP) mein baithi thi! Jab SP se Northeast parcel jaata tha, to delivery time 15–22 din ho jaata tha aur freight 75% mehenga ($23.63 vs $13.45) ho jaata tha.</p>
+      </div>
+
+<pre><code>-- Intra-State vs Inter-State Logistics Disparity
+SELECT 
+    CASE 
+        WHEN s.seller_state = c.customer_state THEN 'Same-State (Intra-state)' 
+        ELSE 'Inter-state (Cross-state)' 
+    END AS transit_type,
+    COUNT(oi.order_id) AS total_items,
+    ROUND(AVG(oi.freight_value), 2) AS avg_freight,
+    ROUND(AVG(DATEDIFF(o.order_delivered_customer_date, o.order_purchase_timestamp)), 1) AS avg_delivery_days,
+    ROUND(SUM(CASE WHEN DATEDIFF(o.order_delivered_customer_date, o.order_estimated_delivery_date) &gt; 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(oi.order_id), 2) AS delay_pct
+FROM order_items oi
+JOIN sellers s ON oi.seller_id = s.seller_id
+JOIN orders o ON oi.order_id = o.order_id
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY transit_type;</code></pre>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"I modeled the logistical penalty of inter-state commerce by comparing orders where <code>seller_state = customer_state</code> against cross-border routes. Intra-state shipments cost $13.45 and took 7.9 days with a 4.45% delay rate. In contrast, inter-state shipments suffered a +75% freight cost surge to $23.63, doubled delivery transit to 15.0 days, and saw SLA delay rates jump to 7.81%."</em></p>
+      </div>
+    </section>
+
+    <!-- QUERY 9 -->
+    <section>
+      <h2>Query 9: Regional Sourcing Arbitrage ($716,000 Margin Recovery)</h2>
+      <div class="card-mindset">
+        <h4>🧠 Business Mindset (Hinglish):</h4>
+        <p><strong>Executive Decision:</strong> CFO ko prove karna hai ki agar hum regional hubs banayein to company ko kitne dollar ki bachat hogi.<br>
+        <strong>Math:</strong> Har inter-state order par $10.18 ka freight penalty tha. Top categories ko local fulfillment centers se ship karne se <strong>$716,000 gross margin</strong> directly recover hota hai!</p>
+      </div>
+
+<pre><code>SELECT 
+    t.product_category_name_english AS category,
+    COUNT(*) AS total_sales_count,
+    ROUND(AVG(CASE WHEN s.seller_state = c.customer_state THEN oi.freight_value END), 2) AS local_freight,
+    ROUND(AVG(CASE WHEN s.seller_state != c.customer_state THEN oi.freight_value END), 2) AS interstate_freight,
+    ROUND(AVG(CASE WHEN s.seller_state != c.customer_state THEN oi.freight_value END) - 
+          AVG(CASE WHEN s.seller_state = c.customer_state THEN oi.freight_value END), 2) AS freight_penalty_per_order,
+    ROUND(AVG(CASE WHEN s.seller_state = c.customer_state THEN DATEDIFF(o.order_delivered_customer_date, o.order_purchase_timestamp) END), 1) AS local_delivery_days,
+    ROUND(AVG(CASE WHEN s.seller_state != c.customer_state THEN DATEDIFF(o.order_delivered_customer_date, o.order_purchase_timestamp) END), 1) AS interstate_delivery_days
+FROM order_items oi
+JOIN products p ON oi.product_id = p.product_id
+JOIN category_translation t ON p.product_category_name = t.product_category_name
+JOIN sellers s ON oi.seller_id = s.seller_id
+JOIN orders o ON oi.order_id = o.order_id
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY category
+HAVING COUNT(*) &gt;= 1000
+   AND local_freight IS NOT NULL
+   AND interstate_freight IS NOT NULL
+ORDER BY freight_penalty_per_order DESC
+LIMIT 8;</code></pre>
+
+      <div class="card-script">
+        <h4>🗣️ English Interview Script:</h4>
+        <p><em>"To present a commercially viable solution to leadership, I sized the financial opportunity of establishing regional 3PL fulfillment hubs. By computing the variance between local and inter-state freight across high-velocity categories, I demonstrated a freight penalty of $10.18 per order. Across 70,328 cross-border transactions, transitioning top SKUs to regional hubs represents over $716,000 in gross margin recovery, while slashing transit times from 15 days to under 8 days."</em></p>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
