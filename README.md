@@ -6,7 +6,7 @@
 [![Model: Star Schema](https://img.shields.io/badge/Data%20Model-Star%20Schema-purple.svg)]()
 [![Financial Opportunity: $1.09M](https://img.shields.io/badge/Opportunity%20Identified-%241.09M%20EBITDA-orange.svg)]()
 
-> **Executive Summary:** A forensic data diagnostic across **100,000+ orders**, **112,000+ line items**, and **99,000+ customer reviews** on Brazil's premier e-commerce marketplace (Olist, 2016–2018). While top-line GMV expanded 8x to **$13.59M**, the platform suffered from severe **freight margin leakage** (up to 36.7% in key categories) and a **96.9% customer churn rate**. This investigation uncovers the structural root causes—from a 71.3% seller geographic monopoly in São Paulo to interstate tax border bottlenecks—and models an actionable **$1.09M EBITDA recovery roadmap**.
+> **Executive Summary:** A data analysis across **100,000+ orders**, **112,000+ line items**, and **99,000+ customer reviews** on Brazil's premier e-commerce marketplace (Olist, 2016–2018). While top-line GMV expanded 8x to **$13.59M**, the platform suffered from severe **freight margin leakage** (up to 36.7% in key categories) and a **96.9% customer churn rate**. This investigation uncovers the structural root causes, including a 71.3% seller geographic concentration in São Paulo and interstate fiscal bottlenecks, modeling a **$1.09M EBITDA recovery roadmap**.
 
 ---
 
@@ -66,24 +66,24 @@ The executive analytics suite is delivered via an interactive, 2-page SaaS-grade
 1. **Customer Unit Economics Scorecard:**
    - **Unique Consumer Base:** `96K` buyers.
    - **One-Time Buyers Share (The Leaky Bucket):** `96.9% (90,557 buyers)` repeat rate is stagnant at **3.1%**.
-   - **Repeat LTV Value Lift:** `+88.8%` — Repeat buyers spend **$260.05 vs $137.96** for single buyers, proving that retention nearly doubles customer lifetime value.
+   - **Repeat LTV Value Lift:** `+88.8%`: Repeat buyers spend **$260.05 vs $137.96** for single buyers, proving that retention nearly doubles customer lifetime value.
    - **Delayed GMV at Risk:** `$1.16M` in gross revenue was subjected to delivery delays past promised SLA.
 2. **The CSAT Crash (100% Stacked Sentiment Chart):**
-   - **On-Time Deliveries:** **82.7% Positive (62.4% 5-Star ⭐⭐⭐⭐⭐, 20.3% 4-Star)** | 1-Star is only **6.6%**.
-   - **Delayed Deliveries:** **1-Star rage reviews explode 7x to 46.2% 💥** | 5-Star ratings collapse to **22.2%**.
+   - **On-Time Deliveries:** **82.7% Positive (62.4% 5-Star, 20.3% 4-Star)** | 1-Star is only **6.6%**.
+   - **Delayed Deliveries:** **1-Star reviews surge to 46.2%** | 5-Star ratings drop to **22.2%**.
 3. **The 53K Happy Churned Goldmine (Donut Ring):**
-   - Debunks the assumption that single buyers churned due to poor service: **57.6% (53,259 buyers) gave a 5-STAR rating on their sole purchase!** Total positive sentiment was **77.0%**. Customers churned due to **zero post-purchase lifecycle marketing**, not dissatisfaction.
+   - Debunks the assumption that single buyers churned due to poor service: **57.6% (53,259 buyers) gave a 5-star rating on their sole purchase.** Total positive sentiment was **77.0%**. Customers churned due to lack of post-purchase lifecycle marketing, not dissatisfaction.
 4. **The 1-Star Review Autopsy (Root-Cause Decomposition):**
-   - Pinpoints institutional culpability across all 11,424 1-star reviews:
-     - **Merchant / Product Quality Defects (Delivered On-Time):** **50.8% (5.9K reviews)** — damaged items, counterfeit goods, incorrect specifications.
-     - **Courier Delay Past SLA:** **31.4% (3.6K reviews)** — carrier transit breakdown.
-     - **Lost in Transit / Cancelled:** **17.8% (2.0K reviews)** — inventory stockouts and carrier losses.
+   - Pinpoints culpability across all 11,424 1-star reviews:
+     - **Merchant / Product Quality Defects (Delivered On-Time):** **50.8% (5.9K reviews)**: damaged items, wrong sizes, or defective goods.
+     - **Courier Delay Past SLA:** **31.4% (3.6K reviews)**: carrier transit failure.
+     - **Lost in Transit / Cancelled:** **17.8% (2.0K reviews)**: inventory stockouts and carrier losses.
 5. **Fintech Economics: Installments Multiply Basket Size (Combo Chart):**
-   - Uncovers Brazilian consumer credit elasticity:
+   - Uncovers Brazilian consumer credit behavior:
      - **1x Upfront Payment:** `$96 AOV` ($2.4M GMV)
      - **2x–3x Installments:** `$134 AOV` ($3.1M GMV)
      - **4x–6x Installments:** `$181 AOV` ($3.0M GMV)
-     - **7x–10x Long-Tail Installments:** **`$335 AOV` ($4.1M GMV) — A 3.5x Basket Size Multiplier!**
+     - **7x–10x Long-Tail Installments:** **`$335 AOV` ($4.1M GMV) (3.5x Basket Size Multiplier)**
 
 ---
 
