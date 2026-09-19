@@ -1,16 +1,12 @@
--- ==============================================================================
--- OLIST E-COMMERCE ANALYTICS PIPELINE
--- SCRIPT 02: FORENSIC BUSINESS INVESTIGATIONS & STRATEGIC MODELING
--- Author: Lead Data Analyst (CosmicAuchitya)
--- ==============================================================================
+-- Olist E-Commerce Analytics Pipeline
+-- Script 02: Business Diagnostics & Investigative SQL Queries
+-- Target: MySQL 8.0 (Compatible with SQLite / PostgreSQL)
+-- Author: CosmicAuchitya
 
 USE ecommerce_analytics;
 
--- ==============================================================================
--- MISSION #1: REVENUE VS FREIGHT COST LEAKAGE BY PRODUCT CATEGORY
--- Business Problem: Identify high-volume categories (>100 orders) where freight
--- expenses exceed healthy unit-economic thresholds (>20% of GMV).
--- ==============================================================================
+-- 1. Category Margin Leakage: High freight-to-price ratio (>20%)
+-- Identifies categories where shipping costs eat away product margins.
 SELECT 
     t.product_category_name_english AS category,
     COUNT(oi.order_id) AS total_orders,
@@ -28,18 +24,15 @@ HAVING COUNT(oi.order_id) >= 100
 ORDER BY freight_to_price_ratio DESC
 LIMIT 10;
 
--- Key Finding:
+-- Key Findings:
 -- christmas_supplies: 36.69% freight ratio
 -- signaling_and_security: 30.26%
 -- food_drink: 29.70%
 -- electronics: 29.07% ($160.2K sales with $46.5K freight across 2,767 orders)
 
 
--- ==============================================================================
--- MISSION #2: DELIVERY SLA BREACH VS CUSTOMER CSAT COLLAPSE
--- Business Problem: Quantify the direct impact of late deliveries on review scores
--- and evaluate the surge in 1-star ratings.
--- ==============================================================================
+-- 2. Delivery SLA Breach vs Customer CSAT (Review Scores)
+-- Measures review score drop when delivery misses the estimated date.
 SELECT 
     CASE 
         WHEN DATEDIFF(o.order_delivered_customer_date, o.order_estimated_delivery_date) > 0 THEN 'Delayed'
@@ -56,16 +49,13 @@ WHERE o.order_status = 'delivered'
   AND o.order_delivered_customer_date IS NOT NULL
 GROUP BY delivery_status;
 
--- Key Finding:
--- On-Time Deliveries: 4.29 / 5.0 Avg Rating | 6.63% 1-Star | 62.26% 5-Star
--- Delayed Deliveries: 2.27 / 5.0 Avg Rating | 53.74% 1-Star (8x surge!) | 16.54% 5-Star
+-- Key Findings:
+-- On-time: 4.29 avg rating | 6.63% 1-star | 62.26% 5-star
+-- Delayed: 2.27 avg rating | 53.74% 1-star (8x increase) | 16.54% 5-star
 
 
--- ==============================================================================
--- MISSION #3: MONTH-OVER-MONTH (MoM) REVENUE GROWTH & MACRO TRIANGULATION
--- Business Problem: Track monthly growth trajectory and evaluate macro-economic
--- shocks (e.g. May 2018 Truckers' Strike).
--- ==============================================================================
+-- 3. Month-over-Month (MoM) Revenue Trajectory & Macro Shocks
+-- Tracks monthly growth and correlates dips with historical macro events.
 WITH monthly_sales AS (
     SELECT 
         SUBSTRING(o.order_purchase_timestamp, 1, 7) AS sales_month,
@@ -89,19 +79,14 @@ SELECT
     ) AS mom_growth_pct
 FROM monthly_sales;
 
--- Key Finding:
--- 8x run-rate expansion from $111K (Jan 2017) to ~$900K+ (2018)
--- Black Friday peak: Nov 2017 reached $987.7K (+52.4% MoM)
--- June 2018 contraction: -12.4% MoM dip caused by 11-day "Greve dos Caminhoneiros" (Truckers' Strike)
+-- Key Findings:
+-- 8x revenue expansion from Jan 2017 ($111K) to 2018 run-rate ($900K+)
+-- Black Friday peak in Nov 2017: $987.7K (+52.4% MoM)
+-- June 2018 contraction: -12.4% MoM dip caused by the 11-day nationwide truckers' strike
 
 
--- ==============================================================================
--- MISSION #4: CUSTOMER RETENTION, THE DISCOUNT MYTH & 1-STAR AUTOPSY
--- Business Problem: Determine if customers left because they were discount hunters,
--- or if operational failures drove them away.
--- ==============================================================================
-
--- Part 4A: 1-Time vs Repeat Customer Distribution (Persistent Human Unique ID)
+-- 4. Customer Retention: One-Time vs Repeat Buyers
+-- Evaluates retention using the persistent human customer ID.
 WITH customer_order_counts AS (
     SELECT 
         c.customer_unique_id,
@@ -122,7 +107,9 @@ SELECT
 FROM customer_order_counts
 GROUP BY customer_type;
 
--- Part 4B: Debunking the Discount Myth (Voucher Utilization)
+
+-- 5. Discount Dependency Audit (Voucher Utilization)
+-- Verifies whether 1-time customers left because they were coupon hunters.
 WITH customer_orders AS (
     SELECT 
         c.customer_unique_id,
@@ -149,11 +136,13 @@ SELECT
 FROM customer_orders
 GROUP BY customer_type;
 
--- Key Finding:
--- 96.28% of 1-time buyers paid FULL PRICE (zero vouchers/discounts).
--- Customers were NOT bargain hunters; they had standard willingness to pay.
+-- Key Findings:
+-- 96.28% of 1-time buyers paid full price (zero vouchers applied).
+-- Churn was driven by lack of lifecycle marketing and delivery issues, not price sensitivity.
 
--- Part 4C: The 1-Star Autopsy (Delivery Delays vs Merchant Quality Failure)
+
+-- 6. 1-Star Review Root Cause: Delivery Delay vs Merchant Quality
+-- Separates operational logistics failures from merchant product defects.
 WITH customer_order_reviews AS (
     SELECT 
         c.customer_unique_id,
@@ -174,8 +163,8 @@ WITH customer_order_reviews AS (
 )
 SELECT 
     CASE 
-        WHEN delay_days > 0 THEN 'Delayed (Courier Failure)' 
-        ELSE 'On-Time (Merchant / Quality Issue)' 
+        WHEN delay_days > 0 THEN 'Delayed (Carrier Failure)' 
+        ELSE 'On-Time (Merchant / Quality Defect)' 
     END AS failure_reason,
     COUNT(DISTINCT customer_unique_id) AS lost_1_star_customers,
     ROUND(SUM(payment_value), 2) AS immediate_order_revenue,
@@ -185,18 +174,13 @@ FROM customer_order_reviews
 WHERE review_score = 1
 GROUP BY failure_reason;
 
--- Key Finding:
--- 3,413 customers ($635,017 GMV) gave 1-star strictly due to Courier Delays (avg delay = 12.4 days past SLA).
--- 5,864 customers ($1.18M GMV) gave 1-star due to Product Defects despite on-time delivery.
+-- Key Findings:
+-- 3,413 customers ($635K GMV) gave 1-star strictly due to late delivery (avg 12.4 days late).
+-- 5,864 customers ($1.18M GMV) gave 1-star due to merchant/product defects despite on-time delivery.
 
 
--- ==============================================================================
--- MISSION #5: SUPPLY CHAIN SOURCING MONOPOLY & REGIONAL FULFILLMENT SIMULATION
--- Business Problem: Quantify São Paulo's origin concentration and model the margin
--- recovery of establishing regional fulfillment hubs.
--- ==============================================================================
-
--- Part 5A: Seller Origin Monopoly
+-- 7. Geographic Seller Concentration (São Paulo Logistics Bottleneck)
+-- Checks top origin states to assess seller concentration risks.
 SELECT 
     s.seller_state,
     COUNT(oi.order_id) AS items_shipped,
@@ -206,9 +190,13 @@ JOIN order_items oi ON s.seller_id = oi.seller_id
 GROUP BY s.seller_state
 ORDER BY items_shipped DESC
 LIMIT 5;
--- São Paulo (SP) accounts for 71.32% of all national shipments!
 
--- Part 5B: Same-State (Intra-State) vs Cross-Border (Inter-State) Logistics Penalty
+-- Key Finding:
+-- São Paulo (SP) alone accounts for 71.32% of all seller shipments.
+
+
+-- 8. Intra-State vs Inter-State Logistics Performance
+-- Compares freight cost, transit lead time, and delay rates for local vs cross-border orders.
 SELECT 
     CASE 
         WHEN s.seller_state = c.customer_state THEN 'Same-State (Intra-state)' 
@@ -226,12 +214,13 @@ WHERE o.order_status = 'delivered'
   AND o.order_delivered_customer_date IS NOT NULL
 GROUP BY transit_type;
 
--- Key Finding:
--- Intra-State: $13.45 Freight | 7.9 Days Delivery | 4.45% Delay Rate
--- Inter-State: $23.63 Freight (+75% Penalty!) | 15.0 Days (2x Slower!) | 7.81% Delay Rate
+-- Key Findings:
+-- Intra-State: $13.45 avg freight | 7.9 delivery days | 4.45% delay rate
+-- Inter-State: $23.63 avg freight (+75% cost) | 15.0 days (2x slower) | 7.81% delay rate
 
--- Part 5C: Local Sourcing Arbitrage Opportunity Sizing
--- Sizing the financial gain of moving top categories to local warehousing:
+
+-- 9. Regional Warehousing Opportunity Sizing (Freight Arbitrage)
+-- Calculates freight differential and lead time penalty by category for interstate orders.
 SELECT 
     t.product_category_name_english AS category,
     COUNT(*) AS total_sales_count,
@@ -257,4 +246,4 @@ ORDER BY freight_penalty_per_order DESC
 LIMIT 8;
 
 -- Across 70,328 interstate orders, the theoretical gap between local ($13.45) 
--- and cross-border ($23.63) freight represents a $716,000+ margin recovery opportunity!
+-- and cross-border ($23.63) freight represents a $716,000+ margin recovery opportunity.

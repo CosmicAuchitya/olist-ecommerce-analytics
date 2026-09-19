@@ -404,7 +404,7 @@ Project_1_Ecommerce_Analytics/
 │   └── page2_customer_churn_autopsy.png
 ├── sql/                                # Production SQL Codebase
 │   ├── 01_database_schema_and_etl.sql  # DDL, Tables, Indexes & Data Loading
-│   └── 02_forensic_investigations.sql  # Missions 1-5 & Sourcing Simulations
+│   └── 02_forensic_investigations.sql  # Strategic Diagnostics & Unit Economics Queries
 ├── dashboard_assets/                   # Visual UI System & Themes
 │   ├── olist_theme.json                # Custom Power BI Palette Theme
 │   ├── page1_executive_layout.svg      # Page 1 1080p SVG Wireframe

@@ -1,16 +1,12 @@
--- ==============================================================================
--- OLIST E-COMMERCE ANALYTICS PIPELINE
--- SCRIPT 01: DATABASE SCHEMA DEFINITION & ETL DATA LOADING
--- Database Engine: MySQL 8.0 / Compatible with PostgreSQL & SQLite
--- Author: Lead Data Analyst (CosmicAuchitya)
--- ==============================================================================
+-- Olist E-Commerce Analytics Pipeline
+-- Script 01: Database Schema & Data Ingestion
+-- Target: MySQL 8.0 (Compatible with SQLite / PostgreSQL)
+-- Author: CosmicAuchitya
 
 CREATE DATABASE IF NOT EXISTS ecommerce_analytics;
 USE ecommerce_analytics;
 
--- ------------------------------------------------------------------------------
--- 1. ORDERS TABLE (Core Transactional Header)
--- ------------------------------------------------------------------------------
+-- 1. Orders Table
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
     order_id VARCHAR(50) PRIMARY KEY,
@@ -41,9 +37,7 @@ SET
  order_delivered_customer_date = NULLIF(@customer_date, ''),
  order_estimated_delivery_date = NULLIF(@estimated_date, '');
 
--- ------------------------------------------------------------------------------
--- 2. CATEGORY TRANSLATION TABLE (Portuguese to English)
--- ------------------------------------------------------------------------------
+-- 2. Category Translation Table
 DROP TABLE IF EXISTS category_translation;
 CREATE TABLE category_translation (
     product_category_name VARCHAR(100) PRIMARY KEY,
@@ -57,9 +51,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
--- ------------------------------------------------------------------------------
--- 3. PRODUCTS TABLE (Product Dimensions & Categorization)
--- ------------------------------------------------------------------------------
+-- 3. Products Table
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
     product_id VARCHAR(50) PRIMARY KEY,
@@ -91,9 +83,7 @@ SET
  product_height_cm = NULLIF(@h, ''),
  product_width_cm = NULLIF(@w, '');
 
--- ------------------------------------------------------------------------------
--- 4. ORDER ITEMS TABLE (Granular Line-Item & Sourcing Records)
--- ------------------------------------------------------------------------------
+-- 4. Order Items Table
 DROP TABLE IF EXISTS order_items;
 CREATE TABLE order_items (
     order_id VARCHAR(50),
@@ -115,9 +105,8 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
--- ------------------------------------------------------------------------------
--- 5. CUSTOMERS TABLE (Customer Mapping: Surrogate Key vs Persistent Human ID)
--- ------------------------------------------------------------------------------
+-- 5. Customers Table
+-- Note: customer_unique_id tracks the persistent human customer across repeat purchases.
 DROP TABLE IF EXISTS customers;
 CREATE TABLE customers (
     customer_id VARCHAR(50) PRIMARY KEY,
@@ -136,9 +125,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
--- ------------------------------------------------------------------------------
--- 6. SELLERS TABLE (Merchant Geographic Origins)
--- ------------------------------------------------------------------------------
+-- 6. Sellers Table
 DROP TABLE IF EXISTS sellers;
 CREATE TABLE sellers (
     seller_id VARCHAR(50) PRIMARY KEY,
@@ -155,9 +142,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
--- ------------------------------------------------------------------------------
--- 7. ORDER REVIEWS TABLE (Customer Satisfaction & Review Feedback)
--- ------------------------------------------------------------------------------
+-- 7. Order Reviews Table
 DROP TABLE IF EXISTS order_reviews;
 CREATE TABLE order_reviews (
     review_id VARCHAR(50),
@@ -178,9 +163,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
--- ------------------------------------------------------------------------------
--- 8. ORDER PAYMENTS TABLE (Payment Instruments, Value & Installments)
--- ------------------------------------------------------------------------------
+-- 8. Order Payments Table
 DROP TABLE IF EXISTS order_payments;
 CREATE TABLE order_payments (
     order_id VARCHAR(50),
@@ -199,9 +182,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
--- ------------------------------------------------------------------------------
--- DATA AUDIT / VERIFICATION COUNT
--- ------------------------------------------------------------------------------
+-- Verification: Row count audit across all ingested tables
 SELECT 'orders' AS table_name, COUNT(*) AS record_count FROM orders
 UNION ALL
 SELECT 'order_items', COUNT(*) FROM order_items
