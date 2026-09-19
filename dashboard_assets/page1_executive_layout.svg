@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <rect width="1920" height="1080" fill="#F1F5F9"/>
+  <!-- Header Bar -->
+  <rect x="30" y="25" width="1860" height="80" rx="12" fill="#FFFFFF" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.05))"/>
+  <!-- 4 KPI Cards -->
+  <rect x="30" y="125" width="445" height="130" rx="12" fill="#FFFFFF"/>
+  <rect x="500" y="125" width="445" height="130" rx="12" fill="#FFFFFF"/>
+  <rect x="970" y="125" width="445" height="130" rx="12" fill="#FFFFFF"/>
+  <rect x="1440" y="125" width="450" height="130" rx="12" fill="#FFFFFF"/>
+  <!-- Chart Container 1 (Monthly Trend) -->
+  <rect x="30" y="275" width="1150" height="440" rx="12" fill="#FFFFFF"/>
+  <!-- Chart Container 2 (Category Margin Leakage) -->
+  <rect x="1205" y="275" width="685" height="440" rx="12" fill="#FFFFFF"/>
+  <!-- Bottom Chart 1 (Payment Methods) -->
+  <rect x="30" y="735" width="910" height="315" rx="12" fill="#FFFFFF"/>
+  <!-- Bottom Chart 2 (State Delivery Performance) -->
+  <rect x="965" y="735" width="925" height="315" rx="12" fill="#FFFFFF"/>
+</svg>

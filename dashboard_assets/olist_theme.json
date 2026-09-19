@@ -1,0 +1,33 @@
+{
+  "name": "Olist Executive Theme",
+  "dataColors": [
+    "#1E3A8A",
+    "#EF4444",
+    "#10B981",
+    "#F59E0B",
+    "#3B82F6",
+    "#8B5CF6",
+    "#64748B",
+    "#0F172A"
+  ],
+  "visualStyles": {
+    "*": {
+      "*": {
+        "title": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#1E293B" } },
+            "fontSize": 12,
+            "fontFamily": "Segoe UI Semibold"
+          }
+        ],
+        "background": [
+          {
+            "show": false,
+            "transparency": 100
+          }
+        ]
+      }
+    }
+  }
+}

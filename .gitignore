@@ -1,0 +1,9 @@
+# Large raw datasets (download via Kaggle link in README)
+*.csv
+*.db
+*.sqlite
+
+# Temporary & system logs
+*.log
+.system_generated/
+scratch/

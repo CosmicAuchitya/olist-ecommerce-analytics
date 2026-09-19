@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <filter id="card-shadow" x="-2%" y="-2%" width="104%" height="106%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0F172A" flood-opacity="0.05"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1920" height="1080" fill="#F1F5F9"/>
+
+  <!-- Top Header Bar -->
+  <rect x="30" y="25" width="1860" height="80" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" filter="url(#card-shadow)"/>
+
+  <!-- Top 4 KPI Cards with Executive Accent Stripes -->
+  <!-- KPI 1: Unique Customers (SaaS Blue Accent) -->
+  <g filter="url(#card-shadow)">
+    <rect x="30" y="125" width="445" height="130" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <path d="M 42 125 L 463 125" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- KPI 2: 1-Time Buyers Leaky Bucket (Alert Coral Red Accent) -->
+  <g filter="url(#card-shadow)">
+    <rect x="500" y="125" width="445" height="130" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <path d="M 512 125 L 933 125" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- KPI 3: Repeat LTV Value Lift (Emerald Growth Green Accent) -->
+  <g filter="url(#card-shadow)">
+    <rect x="970" y="125" width="445" height="130" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <path d="M 982 125 L 1403 125" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- KPI 4: Courier Delay GMV Burn (Amber Financial Risk Accent) -->
+  <g filter="url(#card-shadow)">
+    <rect x="1440" y="125" width="450" height="130" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <path d="M 1452 125 L 1878 125" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Middle Row Containers -->
+  <!-- Container 1: CSAT Crash (100% Stacked Sentiment) - 60% Width -->
+  <rect x="30" y="275" width="1150" height="440" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" filter="url(#card-shadow)"/>
+
+  <!-- Container 2: 53K Happy Churned Goldmine - 40% Width -->
+  <rect x="1205" y="275" width="685" height="440" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" filter="url(#card-shadow)"/>
+
+  <!-- Bottom Row Containers -->
+  <!-- Container 3: 1-Star Autopsy (Root-Cause Decomposition / Treemap) - 50% Width -->
+  <rect x="30" y="735" width="915" height="315" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" filter="url(#card-shadow)"/>
+
+  <!-- Container 4: Fintech Economics (Installments vs AOV Combo Chart) - 50% Width -->
+  <rect x="975" y="735" width="915" height="315" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" filter="url(#card-shadow)"/>
+</svg>
